@@ -1,0 +1,5 @@
+package-lock.json
+package.json
+node_modules/
+learn-webpack/
+task_0/dist/main.js
