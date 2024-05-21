@@ -1,62 +1,60 @@
 const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './js/dashboard_main.js',
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public')
+  mode: 'development',
+  entry: {
+    header: {
+      import: './modules/header/header.js',
+      dependOn: 'shared',
+    },
+    body: {
+      import: './modules/body/body.js',
+      dependOn: 'shared',
+    },
+    footer: {
+      import: './modules/footer/footer.js',
+      dependOn: 'shared',
+    },
+    shared: 'jquery',
   },
-  mode: 'production',
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'public'),
+  },
+  devServer: {
+    contentBase: './public',
+    port: 8564,
+  },
+  devtool: 'inline-source-map',
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'index.html',
+    }),
+  ],
+  devServer: {
+    static: path.join(__dirname, './public'),
+    open: true,
+    port: 8564,
+  },
+  performance: {
+    maxAssetSize: 1000000,
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
-        }
-      },
-      {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
-      {
-        test: /\.(png|jpg|jpeg|gif|ico)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[hash].[ext]',
-              outputPath: 'images',
-            },
-          },
-          {
-            loader: 'image-webpack-loader',
-            options: {
-              mozjpeg: {
-                progressive: true,
-                quality: 65
-              },
-              optipng: {
-                enabled: true,
-              },
-              pngquant: {
-                quality: [0.65, 0.90],
-                speed: 4
-              },
-              gifsicle: {
-                interlaced: false,
-              },
-              webp: {
-                quality: 75
-              }
-            }
-          }
-        ]
-      }
-    ]
-  }
+      // Add other loaders for images, fonts, etc.
+    ],
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
 };
