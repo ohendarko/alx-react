@@ -39,5 +39,6 @@
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupTests.js"
     ]
-  }
+  },
+  "homepage": "https://ohendarko.github.io/alx-react"
 }
