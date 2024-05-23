@@ -10,18 +10,18 @@ function App() {
         <img src={holbertonLogo} className="App-logo" alt="Holberton logo" />
         <h1>School dashboard</h1>
       </header>
-      <div className="App-body"> {/* Changed <body> to <div> */}
+      <div className="App-body">
         <p>Login to access the full dashboard</p>
-        <label htmlFor="e-mail">Email</label> {/* Changed 'for' to 'htmlFor' */}
+        <label htmlFor="e-mail">Email: </label>
         <input type="email" name="email" id="e-mail" />
-        <br />
-        <label htmlFor="pass-word">Password</label> {/* Changed 'for' to 'htmlFor' */}
+
+        <label htmlFor="pass-word">Password: </label>
         <input type="password" id="pass-word" />
-        <br />
+
         <button>OK</button>
-      </div> {/* Closed the <div> */}
+      </div>
       <footer className="App-footer">
-        <p>Copyright {getFullYear()} - {getFooterCopy(true)}</p> {/* Added parentheses to function calls */}
+        <p>Copyright {getFullYear()} - {getFooterCopy(true)}</p>
       </footer>
     </div>
   );

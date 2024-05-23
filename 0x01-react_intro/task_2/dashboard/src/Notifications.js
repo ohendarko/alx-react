@@ -19,12 +19,11 @@ export default function Notifications() {
       <button
         style={{
           position: 'absolute',
-          top: '10px',
-          right: '10px',
+          top: '15px',
+          right: '15px',
           backgroundColor: 'transparent',
           border: 'none',
           cursor: 'pointer',
-          fontSize: '16px'
         }}
         aria-label="Close"
         onClick={handleCloseClick}

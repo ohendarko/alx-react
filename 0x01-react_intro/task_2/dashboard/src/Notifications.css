@@ -1,5 +1,5 @@
 .Notifications {
-  border: 5px dashed red;
+  border: 1px dashed red;
   padding: 5px;
 }
 
@@ -14,4 +14,8 @@
 .Notifications button img {
   width: 16px;
   height: 16px;
+}
+
+.Notifications li:nth-child(3) {
+  color: red;
 }

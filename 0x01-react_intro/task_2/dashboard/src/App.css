@@ -26,3 +26,7 @@ body {
   border-top: 2px solid red;
   font-style: italic;
 }
+
+input {
+  margin-right: 10px;
+}
