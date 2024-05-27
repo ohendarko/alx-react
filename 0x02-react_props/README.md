@@ -1,1 +1,1 @@
-# 0x02. React props
+# 0x01. React intro
