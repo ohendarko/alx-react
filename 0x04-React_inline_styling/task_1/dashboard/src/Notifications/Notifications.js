@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./Notifications.css";
+import { StyleSheet, css } from 'aphrodite';
 import closeIcon from '../assets/close-icon.png';
 import NotificationItem from "./NotificationItem";
 import PropTypes from 'prop-types';
@@ -30,11 +30,11 @@ class Notifications extends Component {
 
     return (
       <>
-        <div className="menuItem">
+        <div className={css(styles.menuItem)}>
           Your notifications
         </div>
         {displayDrawer && (
-          <div className="Notifications">
+          <div className={css(styles.notifications)}>
             <p>Here is the list of notifications</p>
             <ul>
               {listNotifications.map(notification => (
@@ -44,22 +44,19 @@ class Notifications extends Component {
                   value={notification.value}
                   html={notification.html}
                   markAsRead={this.markAsRead}
+                  className={css(
+                    notification.type === 'urgent' ? styles.urgent : styles.default,
+                    notification.id === 3 && styles.thirdItem
+                  )}
                 />
               ))}
             </ul>
             <button
-              style={{
-                position: 'absolute',
-                top: '15px',
-                right: '15px',
-                backgroundColor: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-              }}
+              className={css(styles.closeButton)}
               aria-label="Close"
               onClick={this.handleCloseClick}
             >
-              <img src={closeIcon} alt="close icon" />
+              <img src={closeIcon} alt="close icon" className={css(styles.closeIcon)} />
             </button>
           </div>
         )}
@@ -86,5 +83,40 @@ Notifications.defaultProps = {
   displayDrawer: false,
   listNotifications: [],
 };
+
+const styles = StyleSheet.create({
+  notifications: {
+    border: '1px dashed red',
+    padding: '5px',
+    position: 'relative',
+  },
+  menuItem: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: '15px',
+    right: '15px',
+    backgroundColor: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
+  },
+  closeIcon: {
+    width: '16px',
+    height: '16px',
+  },
+  default: {
+    color: 'blue',
+  },
+  urgent: {
+    color: 'red',
+  },
+  thirdItem: {
+    ':nth-child(3)': {
+      color: 'red',
+    },
+  },
+});
 
 export default Notifications;

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {StyleSheet, css} from 'aphrodite';
-import './App.css';
+import { StyleSheet, css } from 'aphrodite';
 import PropTypes from 'prop-types';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
 import BodySection from '../BodySection/BodySection';
@@ -59,7 +58,7 @@ class App extends Component {
     const { listCourses, listNotifications } = this.state;
 
     return (
-      <div className="App">
+      <div className={css(styles.app)}>
         <Notifications displayDrawer={true} listNotifications={listNotifications} />
         <Header />
         <BodySectionWithMarginBottom title="Course list">
@@ -75,7 +74,38 @@ class App extends Component {
       </div>
     );
   }
-  
+
+
 }
+
+const styles = StyleSheet.create({
+  app: {
+    fontFamily: 'Arial, Helvetica, sans-serif',
+    padding: '5px 10px 15px 10px',
+  },
+  header: {
+    display: 'flex',
+    borderBottom: '2px solid red',
+    color: 'red',
+    alignItems: 'center',
+    ' img': {
+      height: '180px',
+      margin: '5px',
+    },
+  },
+  body: {
+    padding: '45px',
+    minHeight: '250px',
+  },
+  footer: {
+    display: 'flex',
+    justifyContent: 'center',
+    borderTop: '2px solid red',
+    fontStyle: 'italic',
+  },
+  input: {
+    marginRight: '10px',
+  },
+});
 
 export default App;

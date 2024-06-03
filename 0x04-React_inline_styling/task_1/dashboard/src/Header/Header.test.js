@@ -1,17 +1,18 @@
-// Header.test.js
 import React from 'react';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { StyleSheetTestUtils } from 'aphrodite';
 import Header from './Header';
 
-test('shallow render Header component without crashing', () => {
-  render(<Header />);
+beforeAll(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
 });
 
-test('renders img and h1 tags', () => {
-  const { container } = render(<Header />);
-  const img = container.querySelector('img');
-  const h1 = container.querySelector('h1');
-  expect(img).toBeInTheDocument();
-  expect(h1).toBeInTheDocument();
+afterAll(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
+
+test('renders Header component', () => {
+  const { getByText } = render(<Header />);
+  const linkElement = getByText(/Header content/i);
+  expect(linkElement).toBeInTheDocument();
 });

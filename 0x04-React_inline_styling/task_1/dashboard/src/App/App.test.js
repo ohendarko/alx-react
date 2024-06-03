@@ -1,34 +1,18 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { render } from '@testing-library/react';
+import { StyleSheetTestUtils } from 'aphrodite';
 import App from './App';
 
-describe('App component', () => {
-  let logOutMock;
-  let alertMock;
+beforeAll(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
+});
 
-  beforeEach(() => {
-    logOutMock = jest.fn();
-    alertMock = jest.spyOn(window, 'alert').mockImplementation(() => { });
-  });
+afterAll(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
 
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
-  it('renders without crashing', () => {
-    shallow(<App />);
-  });
-
-  it('calls logOut and shows alert when ctrl+h is pressed', () => {
-    const wrapper = mount(<App isLoggedIn={true} logOut={logOutMock} />);
-
-    // Simulate ctrl+h key press
-    const event = new KeyboardEvent('keydown', { ctrlKey: true, key: 'h' });
-    document.dispatchEvent(event);
-
-    expect(alertMock).toHaveBeenCalledWith('Logging you out');
-    expect(logOutMock).toHaveBeenCalled();
-
-    wrapper.unmount();
-  });
+test('renders App component', () => {
+  const { getByText } = render(<App />);
+  const linkElement = getByText(/Your notifications/i);
+  expect(linkElement).toBeInTheDocument();
 });

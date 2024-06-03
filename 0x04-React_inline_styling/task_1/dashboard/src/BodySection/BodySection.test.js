@@ -1,15 +1,20 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
+import { StyleSheetTestUtils } from 'aphrodite';
 import BodySection from './BodySection';
 
-describe('BodySection Component', () => {
-  it('renders children and h2 element correctly', () => {
-    const wrapper = shallow(
-      <BodySection title="test title">
-        <p>test children node</p>
-      </BodySection>
-    );
-    expect(wrapper.find('h2').text()).toEqual('test title');
-    expect(wrapper.find('p').text()).toEqual('test children node');
-  });
+beforeAll(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
+});
+
+afterAll(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
+
+test('renders BodySection component', () => {
+  const { getByText } = render(<BodySection title="Test Title">Test Content</BodySection>);
+  const titleElement = getByText(/Test Title/i);
+  const contentElement = getByText(/Test Content/i);
+  expect(titleElement).toBeInTheDocument();
+  expect(contentElement).toBeInTheDocument();
 });

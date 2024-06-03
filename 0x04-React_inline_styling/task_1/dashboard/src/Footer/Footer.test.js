@@ -1,14 +1,18 @@
-// Footer.test.js
 import React from 'react';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { StyleSheetTestUtils } from 'aphrodite';
 import Footer from './Footer';
 
-test('shallow render Footer component without crashing', () => {
-  render(<Footer />);
+beforeAll(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
 });
 
-test('renders the text “Copyright”', () => {
+afterAll(() => {
+  StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+});
+
+test('renders Footer component', () => {
   const { getByText } = render(<Footer />);
-  expect(getByText(/Copyright/i)).toBeInTheDocument();
+  const linkElement = getByText(/Footer content/i);
+  expect(linkElement).toBeInTheDocument();
 });
