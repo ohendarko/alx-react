@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start-dev": "webpack serve --open --hot --config ./config/webpack.config.js",
-    "start": "react-scripts start",
+    "start": "webpack serve --mode development --config config/webpack.config.js",
     "build": "webpack --config ./config/webpack.config.js",
     "test": "jest",
     "test-watch": "jest --watch",

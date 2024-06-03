@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "aphrodite": "^2.4.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -14,7 +15,7 @@
   },
   "scripts": {
     "start-dev": "webpack serve --open --hot --config ./config/webpack.config.js",
-    "start": "react-scripts start",
+    "start": "webpack serve --mode development --config config/webpack.config.js",
     "build": "webpack --config ./config/webpack.config.js",
     "test": "jest",
     "test-watch": "jest --watch",
