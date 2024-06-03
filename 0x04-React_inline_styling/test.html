@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style> 
+.container-item {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+  animation-name: xander, open-wide;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: linear;
+  /* animation-fill-mode: forwards; */
+}
+
+@keyframes open-wide {
+  from {height: 1px;}
+  to {height: 200px;}
+}
+
+@keyframes xander {
+  /* from {background-color: red;}
+  to {background-color: white;} */
+  
+  from {width: 1px;}
+  to {width: 400px;}
+  
+  from {border-radius: 0;}
+  to {border-radius: 20px;}
+  
+  0%   {background-color: red; right: 0;}
+  25%  {background-color: yellow;}
+  50%  {background-color: blue;}
+  100% {background-color: green; right: 300px;}
+  
+}
+.container-item {
+	display: flex;
+  position: relative;
+  
+}
+
+.container {
+	display: flex;
+  justify-content: flex-end;
+  animation-duration: 4s;
+}
+</style>
+</head>
+<body>
+
+<h1>CSS Animation</h1>
+
+<div class="container">
+	<div class="container-item">
+    </div>
+</div>
+
+<p><b>Note:</b> When an animation is finished, it goes back to its original style.</p>
+
+</body>
+</html>
