@@ -39,6 +39,7 @@ class Notifications extends Component {
             <ul>
               {listNotifications.map(notification => (
                 <NotificationItem
+                  id={notification.id}
                   key={notification.id}
                   type={notification.type}
                   value={notification.value}
@@ -89,6 +90,15 @@ const styles = StyleSheet.create({
     border: '1px dashed red',
     padding: '5px',
     position: 'relative',
+  },
+  notificationText: {
+    marginBottom: '10px',
+    padding: '10px 8px',
+  },
+  notificationList: {
+    listStyleType: 'none',
+    margin: 0,
+    padding: 0,
   },
   menuItem: {
     display: 'flex',
