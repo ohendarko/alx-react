@@ -30,12 +30,9 @@ class Notifications extends Component {
 
     return (
       <>
-        <div className={css(styles.jiggleContainer)}>
-          <div className={css(styles.menuItem)}>
-            Your notifications
-          </div>
+        <div className={css(styles.menuItem)}>
+          Your notifications
         </div>
-
         {displayDrawer && (
           <div className={css(styles.notifications)}>
             <p>Here is the list of notifications</p>
@@ -48,7 +45,7 @@ class Notifications extends Component {
                   value={notification.value}
                   html={notification.html}
                   markAsRead={this.markAsRead}
-
+                  
                 />
               ))}
             </ul>
@@ -100,19 +97,7 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
   },
-  '@keyframes jiggle': {
-    from: {top: '2px'},
-    to: {top: '-2px'},
-  },
   menuItem: {
-    display: 'flex',
-    position: 'relative',
-    justifyContent: 'flex-end',
-    ':hover': {
-      animation: 'jiggle 1s linear 3 alternate',
-    }
-  },
-  jiggleContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
   },
