@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
-import './login.css';
 
 const Login = () => {
   return (
@@ -28,7 +27,7 @@ const Login = () => {
 };
 
 const screenSize = {
-  nineHundredPixel: '@media screen and (max-width: 900px)'
+  nineHundredPixel: '@media screen and (max-width: 900px)',
 };
 
 const styles = StyleSheet.create({
@@ -42,18 +41,31 @@ const styles = StyleSheet.create({
 
   inputSection: {
     display: 'flex',
-    flexDirection: 'row'
-  },
-  [screenSize.nineHundredPixel]: {
-    inputSection: {
+    flexDirection: 'row',
+    [screenSize.nineHundredPixel]: {
       flexDirection: 'column',
-    },
-    entry: {
+    }
+  },
+  entry: {
+    [screenSize.nineHundredPixel]: {
       marginBottom: '5px',
     },
-    buton: {
+  },
+  buton: {
+    [screenSize.nineHundredPixel]: {
       maxWidth: '50px',
-    }
+    },
   }
+  // [screenSize.nineHundredPixel]: {
+  //   inputSection: {
+  //     flexDirection: 'column',
+  //   },
+  //   entry: {
+  //     marginBottom: '5px',
+  //   },
+  //   buton: {
+  //     maxWidth: '50px',
+  //   }
+  // }
 });
 export default Login;
