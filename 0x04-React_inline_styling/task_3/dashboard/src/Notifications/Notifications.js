@@ -45,10 +45,7 @@ class Notifications extends Component {
                   value={notification.value}
                   html={notification.html}
                   markAsRead={this.markAsRead}
-                  className={css(
-                    notification.type === 'urgent' ? styles.urgent : styles.default,
-                    notification.id === 3 && styles.thirdItem
-                  )}
+                  
                 />
               ))}
             </ul>

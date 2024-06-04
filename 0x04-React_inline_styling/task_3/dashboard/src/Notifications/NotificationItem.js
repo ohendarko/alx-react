@@ -17,7 +17,15 @@ class NotificationItem extends PureComponent {
     const { type, value, html } = this.props;
 
     return (
-      <li onClick={this.handleClick} data-notification-type={type} className={css(styles.notificationItem)}>
+      <li
+        onClick={this.handleClick}
+        data-notification-type={type}
+        className={css(
+          styles.notificationItem,
+          type === 'urgent' ? styles.urgent : styles.default,
+          this.props.id === 3 && styles.thirdItem
+        )}
+      >
         {html ? (
           <span dangerouslySetInnerHTML={html} />
         ) : (
@@ -47,6 +55,15 @@ const styles = StyleSheet.create({
     borderBottom: '1px solid black',
     fontSize: '20px',
     padding: '10px 8px',
+  },
+  default: {
+    color: 'blue',
+  },
+  urgent: {
+    color: 'red',
+  },
+  thirdItem: {
+    color: 'red',
   },
 });
 
