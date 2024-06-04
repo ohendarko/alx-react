@@ -105,6 +105,12 @@ const styles = StyleSheet.create({
   closeIcon: {
     width: '16px',
     height: '16px',
+    position: 'absolute',
+    top: '-15px',
+    right: '-15px',
+    backgroundColor: 'transparent',
+    border: 'none',
+    cursor: 'pointer'
   },
   default: {
     color: 'blue',
