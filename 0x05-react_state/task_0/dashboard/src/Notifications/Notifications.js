@@ -13,6 +13,7 @@ class Notifications extends Component {
 
   handleCloseClick() {
     console.log("Close button has been clicked");
+    this.props.handleHideDrawer();
   }
 
   markAsRead(id) {
@@ -22,15 +23,16 @@ class Notifications extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.listNotifications.length > this.props.listNotifications.length;
+    return nextProps.listNotifications.length > this.props.listNotifications.length ||
+           nextProps.displayDrawer !== this.props.displayDrawer;
   }
 
   render() {
-    const { displayDrawer, listNotifications } = this.props;
+    const { displayDrawer, listNotifications, handleDisplayDrawer } = this.props;
 
     return (
       <>
-        <div className={css(styles.menuItem)}>
+        <div className={css(styles.menuItem)} onClick={handleDisplayDrawer}>
           Your notifications
         </div>
         {displayDrawer && (
@@ -45,7 +47,6 @@ class Notifications extends Component {
                   value={notification.value}
                   html={notification.html}
                   markAsRead={this.markAsRead}
-                  
                 />
               ))}
             </ul>
@@ -75,11 +76,15 @@ Notifications.propTypes = {
       })
     })
   ).isRequired,
+  handleDisplayDrawer: PropTypes.func,
+  handleHideDrawer: PropTypes.func,
 };
 
 Notifications.defaultProps = {
   displayDrawer: false,
   listNotifications: [],
+  handleDisplayDrawer: () => {},
+  handleHideDrawer: () => {},
 };
 
 const styles = StyleSheet.create({
@@ -100,6 +105,7 @@ const styles = StyleSheet.create({
   menuItem: {
     display: 'flex',
     justifyContent: 'flex-end',
+    cursor: 'pointer',
   },
   closeButton: {
     position: 'absolute',

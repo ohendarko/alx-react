@@ -23,6 +23,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      displayDrawer: false,
       listCourses: [
         { id: 1, name: 'ES6', credit: 60 },
         { id: 2, name: 'Webpack', credit: 20 },
@@ -51,15 +52,21 @@ class App extends Component {
     }
   }
 
+  handleDisplayDrawer = () => {
+    this.setState({ displayDrawer: true });
+  }
 
+  handleHideDrawer = () => {
+    this.setState({ displayDrawer: false });
+  }
 
   render() {
     const { isLoggedIn } = this.props;
-    const { listCourses, listNotifications } = this.state;
+    const { listCourses, listNotifications, displayDrawer } = this.state;
 
     return (
       <div className={css(styles.app)}>
-        <Notifications displayDrawer={true} listNotifications={listNotifications} />
+        <Notifications displayDrawer={displayDrawer} listNotifications={listNotifications} handleDisplayDrawer={this.handleDisplayDrawer} handleHideDrawer={this.handleHideDrawer} />
         <Header />
         <BodySectionWithMarginBottom title="Course list">
           <CourseList listCourses={listCourses} />
@@ -74,8 +81,6 @@ class App extends Component {
       </div>
     );
   }
-
-
 }
 
 const styles = StyleSheet.create({
