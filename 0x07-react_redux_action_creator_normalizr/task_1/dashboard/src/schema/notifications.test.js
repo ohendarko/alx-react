@@ -1,5 +1,6 @@
 import getAllNotificationsByUser from './notifications';
-
+import normalizeNotifications from './normalizeNotifications';
+import notifications from "../../../../notifications.json";
 
 jest.mock("../../../../notifications.json", () => ([
   {
@@ -58,6 +59,25 @@ jest.mock("../../../../notifications.json", () => ([
       "type": "urgent",
       "value": "Non diam phasellus vestibulum lorem sed risus ultricies. Tellus mauris a diam maecenas sed"
     }
+  },
+  {
+    "id": "5debd7642e815cd350407777",
+    "author": {
+      "id": "5debd764f8452ef92346c772",
+      "name": {
+        "first": "John",
+        "last": "Doe"
+      },
+      "email": "john.doe@example.com",
+      "picture": "http://placehold.it/32x32",
+      "age": 30
+    },
+    "context": {
+      "guid": "3068c575-d619-40af-bf12-dece1ee18dd3",
+      "isRead": false,
+      "type": "default",
+      "value": "Cursus risus at ultrices mi."
+    }
   }
 ]));
 
@@ -81,5 +101,56 @@ describe('getAllNotificationsByUser', () => {
 
     const contexts = getAllNotificationsByUser(userId);
     expect(contexts).toEqual(expectedContexts);
+  });
+
+  it('should return the correct normalized result array', () => {
+    const normalizedData = normalizeNotifications(notifications);
+    const expectedResultArray = [
+      "5debd76480edafc8af244228",
+      "5debd764507712e7a1307303",
+      "5debd76444dd4dafea89d53b",
+      "5debd7642e815cd350407777"
+    ];
+
+    expect(normalizedData.result).toEqual(expectedResultArray);
+  });
+
+  it('should return the correct normalized user entity', () => {
+    const normalizedData = normalizeNotifications(notifications);
+    const userId = "5debd764a7c57c7839d722e9";
+    const expectedUser = {
+      age: 25,
+      email: "poole.sanders@holberton.nz",
+      id: userId,
+      name: { first: "Poole", last: "Sanders" },
+      picture: "http://placehold.it/32x32"
+    };
+
+    expect(normalizedData.entities.users[userId]).toEqual(expectedUser);
+  });
+
+  it('should return the correct normalized message entity', () => {
+    const normalizedData = normalizeNotifications(notifications);
+    const messageGuid = "3068c575-d619-40af-bf12-dece1ee18dd3";
+    const expectedMessage = {
+      guid: messageGuid,
+      isRead: false,
+      type: "default",
+      value: "Cursus risus at ultrices mi."
+    };
+
+    expect(normalizedData.entities.messages[messageGuid]).toEqual(expectedMessage);
+  });
+
+  it('should return the correct normalized notification entity', () => {
+    const normalizedData = normalizeNotifications(notifications);
+    const notificationId = "5debd7642e815cd350407777";
+    const expectedNotification = {
+      author: "5debd764f8452ef92346c772",
+      context: "3068c575-d619-40af-bf12-dece1ee18dd3",
+      id: notificationId
+    };
+
+    expect(normalizedData.entities.notifications[notificationId]).toEqual(expectedNotification);
   });
 });

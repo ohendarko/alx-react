@@ -1,11 +1,10 @@
-import notifications from "../../../../notifications.json";
+import { schema } from 'normalizr';
 
-export default function getAllNotificationsByUser(userId) {
-  let contextList = [];
-  for (const notification in notifications) {
-    if (notification.author.id === userId) {
-        contextList.push(notification.context);
-    }
-  }
-  return contextList;
-}
+const user = new schema.Entity('users');
+const message = new schema.Entity('mesages', {}, { idAttribute: 'guid' });
+const notification = new schema.Entity('notifications', {
+  author: user,
+  context: message
+});
+
+export { user, message, notification };
