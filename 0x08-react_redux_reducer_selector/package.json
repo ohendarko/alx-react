@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "immutable": "^4.3.6"
+    "immutable": "^4.3.6",
+    "reselect": "^5.1.1"
   }
 }
