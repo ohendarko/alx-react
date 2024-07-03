@@ -1,8 +1,10 @@
+// src/App/App.test.js
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StyleSheetTestUtils } from 'aphrodite';
-import App from './App';
+import App, { mapStateToProps } from './App';
 import { shallow } from 'enzyme';
+import { fromJS } from 'immutable';
 
 beforeAll(() => {
   StyleSheetTestUtils.suppressStyleInjection();
@@ -65,3 +67,13 @@ test('markNotificationAsRead function updates the state correctly', () => {
   expect(wrapper.state('listNotifications')).not.toContainEqual({ id: 2, type: 'urgent', value: 'New resume available' });
 });
 
+// New suite to test mapStateToProps
+describe('mapStateToProps', () => {
+  it('should return the correct object when passing the state', () => {
+    const state = fromJS({
+      isUserLoggedIn: true,
+    });
+    const expectedProps = { isLoggedIn: true };
+    expect(mapStateToProps(state)).toEqual(expectedProps);
+  });
+});

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, css } from 'aphrodite';
 import { connect } from 'react-redux';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
@@ -9,13 +10,13 @@ import Notifications from '../Notifications/Notifications';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import { AppContext, defaultUser } from './AppContext.js';
+import { displayNotificationDrawer, hideNotificationDrawer } from '../actions/uiActionCreators';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: defaultUser,
-      displayDrawer: false,
       listCourses: [
         { id: 1, name: 'ES6', credit: 60 },
         { id: 2, name: 'Webpack', credit: 20 },
@@ -44,14 +45,6 @@ class App extends Component {
     }
   }
 
-  handleDisplayDrawer = () => {
-    this.setState({ displayDrawer: true });
-  }
-
-  handleHideDrawer = () => {
-    this.setState({ displayDrawer: false });
-  }
-
   logIn = (email, password) => {
     this.setState({
       user: {
@@ -75,7 +68,8 @@ class App extends Component {
   }
 
   render() {
-    const { user, listCourses, listNotifications, displayDrawer } = this.state;
+    const { user, listCourses, listNotifications } = this.state;
+    const { isLoggedIn, displayDrawer, displayNotificationDrawer, hideNotificationDrawer } = this.props;
 
     return (
       <AppContext.Provider value={{ user, logOut: this.logOut }}>
@@ -83,13 +77,13 @@ class App extends Component {
           <Notifications
             displayDrawer={displayDrawer}
             listNotifications={listNotifications}
-            handleDisplayDrawer={this.handleDisplayDrawer}
-            handleHideDrawer={this.handleHideDrawer}
+            handleDisplayDrawer={displayNotificationDrawer}
+            handleHideDrawer={hideNotificationDrawer}
             markNotificationAsRead={this.markNotificationAsRead}
           />
           <Header />
-          <BodySectionWithMarginBottom title={user.isLoggedIn ? "Course list" : "Log in to continue"}>
-            {user.isLoggedIn ? <CourseList listCourses={listCourses} /> : <Login logIn={this.logIn} />}
+          <BodySectionWithMarginBottom title={isLoggedIn ? "Course list" : "Log in to continue"}>
+            {isLoggedIn ? <CourseList listCourses={listCourses} /> : <Login logIn={this.logIn} />}
           </BodySectionWithMarginBottom>
           <BodySection title="News from the School">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel ex a arcu condimentum semper et vitae ipsum.</p>
@@ -132,8 +126,28 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: state.ui.isLoggedIn,
-})
+  isLoggedIn: state.get('isUserLoggedIn'),
+  displayDrawer: state.get('isNotificationDrawerVisible'),
+});
+
+const mapDispatchToProps = {
+  displayNotificationDrawer,
+  hideNotificationDrawer,
+};
+
+App.propTypes = {
+  isLoggedIn: PropTypes.bool,
+  displayDrawer: PropTypes.bool,
+  displayNotificationDrawer: PropTypes.func,
+  hideNotificationDrawer: PropTypes.func,
+};
+
+App.defaultProps = {
+  isLoggedIn: false,
+  displayDrawer: false,
+  displayNotificationDrawer: () => {},
+  hideNotificationDrawer: () => {},
+};
 
 export { mapStateToProps };
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
