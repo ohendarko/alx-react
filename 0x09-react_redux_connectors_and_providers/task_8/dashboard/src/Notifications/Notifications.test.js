@@ -8,20 +8,12 @@ describe('Notifications Component', () => {
     { id: 2, type: 'urgent', value: 'New resume available' },
   ];
 
-  const mockFetchNotifications = jest.fn();
-  const mockMarkNotificationAsRead = jest.fn();
-  const mockHandleDisplayDrawer = jest.fn();
-  const mockHandleHideDrawer = jest.fn();
-  const mockSetNotificationFilter = jest.fn();
-
   const props = {
-    displayDrawer: true,
     listNotifications: mockNotifications,
-    fetchNotifications: mockFetchNotifications,
-    markNotificationAsRead: mockMarkNotificationAsRead,
-    handleDisplayDrawer: mockHandleDisplayDrawer,
-    handleHideDrawer: mockHandleHideDrawer,
-    setNotificationFilter: mockSetNotificationFilter,
+    isLoading: false,
+    handleDisplayDrawer: jest.fn(),
+    handleHideDrawer: jest.fn(),
+    markAsRead: jest.fn(),
   };
 
   afterEach(() => {
@@ -33,38 +25,9 @@ describe('Notifications Component', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('fetchNotifications is called on mount', () => {
-    shallow(<Notifications {...props} />);
-    expect(mockFetchNotifications).toHaveBeenCalled();
-  });
-
-  it('calls setLoadingState action correctly', () => {
-    const wrapper = shallow(<Notifications {...props} />);
-    wrapper.instance().props.setLoadingState(true);
-    expect(wrapper.instance().props.setLoadingState).toHaveBeenCalledWith(true);
-  });
-
-  it('calls setNotifications action correctly', () => {
-    const wrapper = shallow(<Notifications {...props} />);
-    wrapper.instance().props.setNotifications(mockNotifications);
-    expect(wrapper.instance().props.setNotifications).toHaveBeenCalledWith(mockNotifications);
-  });
-
-  it('calls fetchNotifications action correctly', () => {
-    const wrapper = shallow(<Notifications {...props} />);
-    wrapper.instance().props.fetchNotifications();
-    expect(wrapper.instance().props.fetchNotifications).toHaveBeenCalled();
-  });
-
-  it('calls setNotificationFilter action with URGENT on button click', () => {
-    const wrapper = shallow(<Notifications {...props} />);
-    wrapper.find('.urgentButton').simulate('click');
-    expect(mockSetNotificationFilter).toHaveBeenCalledWith('URGENT');
-  });
-
-  it('calls setNotificationFilter action with DEFAULT on button click', () => {
-    const wrapper = shallow(<Notifications {...props} />);
-    wrapper.find('.defaultButton').simulate('click');
-    expect(mockSetNotificationFilter).toHaveBeenCalledWith('DEFAULT');
+  it('renders loading message when isLoading is true', () => {
+    const loadingProps = { ...props, isLoading: true };
+    const wrapper = shallow(<Notifications {...loadingProps} />);
+    expect(wrapper.text()).toContain('Loading...');
   });
 });

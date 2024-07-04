@@ -1,32 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, css } from 'aphrodite';
 import closeIcon from '../assets/close-icon.png';
 import NotificationItem from './NotificationItem';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUnreadNotificationsByType } from '../selectors/notificationSelector';
-import { setNotificationFilter } from '../actions/notificationActionCreators';
 
 const Notifications = ({
-  displayDrawer,
+  listNotifications,
+  isLoading,
   handleDisplayDrawer,
   handleHideDrawer,
   markAsRead,
 }) => {
-  const dispatch = useDispatch();
-  const listNotifications = useSelector(getUnreadNotificationsByType);
-
-  useEffect(() => {
-    handleDisplayDrawer();
-  }, [handleDisplayDrawer]);
-
   const handleCloseClick = () => {
     console.log('Close button has been clicked');
     handleHideDrawer();
-  };
-
-  const handleSetFilter = (filterType) => {
-    dispatch(setNotificationFilter(filterType));
   };
 
   return (
@@ -34,22 +21,16 @@ const Notifications = ({
       <div className={css(styles.menuItem)} onClick={handleDisplayDrawer}>
         Your notifications
       </div>
-      {displayDrawer && (
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
         <div className={css(styles.notifications)}>
           <p>Here is the list of notifications</p>
-          <div className={css(styles.filterButtons)}>
-            <button onClick={() => handleSetFilter('URGENT')} className={css(styles.filterButton)}>
-              ‼️
-            </button>
-            <button onClick={() => handleSetFilter('DEFAULT')} className={css(styles.filterButton)}>
-              💠
-            </button>
-          </div>
           <ul className={css(styles.notificationList)}>
             {listNotifications.map(notification => (
               <NotificationItem
-                key={notification.get('id')}
-                {...notification.toObject()} // Convert Immutable Map to regular object
+                key={notification.id}
+                {...notification}
                 markAsRead={markAsRead}
               />
             ))}
@@ -68,14 +49,16 @@ const Notifications = ({
 };
 
 Notifications.propTypes = {
-  displayDrawer: PropTypes.bool,
+  listNotifications: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   handleDisplayDrawer: PropTypes.func,
   handleHideDrawer: PropTypes.func,
   markAsRead: PropTypes.func.isRequired,
 };
 
 Notifications.defaultProps = {
-  displayDrawer: false,
+  listNotifications: [],
+  isLoading: false,
   handleDisplayDrawer: () => {},
   handleHideDrawer: () => {},
 };
@@ -113,17 +96,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     border: 'none',
     cursor: 'pointer',
-  },
-  filterButtons: {
-    marginBottom: '10px',
-  },
-  filterButton: {
-    fontSize: '1.5rem',
-    margin: '0 5px',
-    cursor: 'pointer',
-    border: 'none',
-    backgroundColor: 'transparent',
-    outline: 'none',
   },
 });
 
