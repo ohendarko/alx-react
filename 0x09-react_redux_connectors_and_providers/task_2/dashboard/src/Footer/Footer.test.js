@@ -41,3 +41,11 @@ test('link is displayed when the user is logged in', () => {
   const linkElement = getByText(/Contact us/i);
   expect(linkElement).toBeInTheDocument();
 });
+
+describe('Footer Component', () => {
+  test('renders Footer component', () => {
+    const wrapper = shallow(<Footer user={{ isLoggedIn: true }} />);
+    const linkElement = wrapper.find('p').at(1).find('a');
+    expect(linkElement.text()).toBe('Contact us');
+  });
+});

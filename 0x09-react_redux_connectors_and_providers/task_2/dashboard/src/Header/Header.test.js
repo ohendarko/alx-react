@@ -49,3 +49,11 @@ test('calls logOut function when logout link is clicked', () => {
   fireEvent.click(logoutLink);
   expect(logOutSpy).toHaveBeenCalled();
 });
+
+describe('Header Component', () => {
+  test('renders Header component', () => {
+    const wrapper = shallow(<Header user={{ isLoggedIn: true }} />);
+    const welcomeText = wrapper.find('.logoutSection').text();
+    expect(welcomeText).toContain('Welcome');
+  });
+});

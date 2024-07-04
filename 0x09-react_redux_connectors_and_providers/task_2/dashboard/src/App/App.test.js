@@ -99,4 +99,11 @@ describe('App Component', () => {
       expect(mapStateToProps(state)).toEqual(expectedProps);
     });
   });
+  describe('App Component', () => {
+    test('renders App component', () => {
+      const wrapper = shallow(<App isLoggedIn={true} displayDrawer={false} />);
+      const linkElement = wrapper.find('Notifications');
+      expect(linkElement.exists()).toBeTruthy();
+    });
+  });
 });

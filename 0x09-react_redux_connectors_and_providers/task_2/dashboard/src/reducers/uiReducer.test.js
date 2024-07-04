@@ -1,6 +1,11 @@
 import { Map } from 'immutable';
 import uiReducer from './uiReducer';
 import { DISPLAY_NOTIFICATION_DRAWER, SELECT_COURSE } from '../actions/uiActionTypes';
+import {
+  LOGIN_SUCCESS,
+  LOGOUT
+} from '../actions/uiActionTypes';
+import { Map } from 'immutable';
 
 const initialState = Map({
   isNotificationDrawerVisible: false,
@@ -25,5 +30,32 @@ describe('uiReducer', () => {
       ...initialState.toJS(),
       isNotificationDrawerVisible: true
     });
+  });
+});
+
+describe('uiReducer', () => {
+  it('should handle LOGIN_SUCCESS', () => {
+    const initialState = Map({
+      isUserLoggedIn: false,
+      user: {}
+    });
+    const action = {
+      type: LOGIN_SUCCESS,
+      user: { email: 'test@example.com', isLoggedIn: true }
+    };
+    const nextState = uiReducer(initialState, action);
+    expect(nextState.get('isUserLoggedIn')).toBe(true);
+    expect(nextState.get('user')).toEqual(action.user);
+  });
+
+  it('should handle LOGOUT', () => {
+    const initialState = Map({
+      isUserLoggedIn: true,
+      user: { email: 'test@example.com', isLoggedIn: true }
+    });
+    const action = { type: LOGOUT };
+    const nextState = uiReducer(initialState, action);
+    expect(nextState.get('isUserLoggedIn')).toBe(false);
+    expect(nextState.get('user')).toEqual({});
   });
 });
