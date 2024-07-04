@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { StyleSheet, css } from 'aphrodite';
 import CourseListRow from './CourseListRow';
 import CourseShape from './CourseShape';
-import { StyleSheet, css } from 'aphrodite';
+import { fetchCourses, selectCourse, unSelectCourse } from './courseActionCreators';
+import { getListCourses } from './courseSelector';
 
-const CourseList = ({ listCourses }) => {
+const CourseList = ({ listCourses, fetchCourses, selectCourse, unSelectCourse }) => {
+  useEffect(() => {
+    fetchCourses();
+  }, [fetchCourses]);
+
+  const onChangeRow = (id, checked) => {
+    if (checked) {
+      selectCourse(id);
+    } else {
+      unSelectCourse(id);
+    }
+  };
+
   return (
     <table className={css(styles.CourseList)}>
       <thead>
@@ -20,6 +35,8 @@ const CourseList = ({ listCourses }) => {
               key={course.id}
               textFirstCell={course.name}
               textSecondCell={course.credit}
+              isChecked={course.isSelected}
+              onChangeRow={(checked) => onChangeRow(course.id, checked)}
               isHeader={false}
             />
           ))
@@ -31,6 +48,9 @@ const CourseList = ({ listCourses }) => {
 
 CourseList.propTypes = {
   listCourses: PropTypes.arrayOf(CourseShape),
+  fetchCourses: PropTypes.func.isRequired,
+  selectCourse: PropTypes.func.isRequired,
+  unSelectCourse: PropTypes.func.isRequired,
 };
 
 CourseList.defaultProps = {
@@ -53,4 +73,14 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CourseList;
+const mapStateToProps = state => ({
+  listCourses: getListCourses(state),
+});
+
+const mapDispatchToProps = {
+  fetchCourses,
+  selectCourse,
+  unSelectCourse,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CourseList);
