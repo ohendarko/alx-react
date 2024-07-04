@@ -10,7 +10,7 @@ import Notifications from '../Notifications/Notifications';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import { AppContext, defaultUser } from './AppContext.js';
-import { displayNotificationDrawer, hideNotificationDrawer } from '../actions/uiActionCreators';
+import { displayNotificationDrawer, hideNotificationDrawer, loginRequest, logout } from '../actions';
 
 class App extends Component {
   constructor(props) {
@@ -41,49 +41,37 @@ class App extends Component {
   handleKeyDown = (event) => {
     if (event.ctrlKey && event.key === 'h') {
       alert('Logging you out');
-      this.logOut();
+      this.props.logout();
     }
-  }
-
-  logIn = (email, password) => {
-    this.setState({
-      user: {
-        email,
-        password,
-        isLoggedIn: true,
-      },
-    });
-  }
-
-  logOut = () => {
-    this.setState({
-      user: defaultUser,
-    });
-  }
-
-  markNotificationAsRead = (id) => {
-    this.setState(prevState => ({
-      listNotifications: prevState.listNotifications.filter(notification => notification.id !== id)
-    }));
   }
 
   render() {
     const { user, listCourses, listNotifications } = this.state;
-    const { isLoggedIn, displayDrawer, displayNotificationDrawer, hideNotificationDrawer } = this.props;
+    const { isLoggedIn, displayDrawer, displayNotificationDrawer, hideNotificationDrawer, login } = this.props;
+
+    const handleLogIn = (email, password) => {
+      login(email, password);
+    };
+
+    const handleMarkNotificationAsRead = (id) => {
+      this.setState(prevState => ({
+        listNotifications: prevState.listNotifications.filter(notification => notification.id !== id)
+      }));
+    };
 
     return (
-      <AppContext.Provider value={{ user, logOut: this.logOut }}>
+      <AppContext.Provider value={{ user, logOut: this.props.logout }}>
         <div className={css(styles.app)}>
           <Notifications
             displayDrawer={displayDrawer}
             listNotifications={listNotifications}
             handleDisplayDrawer={displayNotificationDrawer}
             handleHideDrawer={hideNotificationDrawer}
-            markNotificationAsRead={this.markNotificationAsRead}
+            markNotificationAsRead={handleMarkNotificationAsRead}
           />
           <Header />
           <BodySectionWithMarginBottom title={isLoggedIn ? "Course list" : "Log in to continue"}>
-            {isLoggedIn ? <CourseList listCourses={listCourses} /> : <Login logIn={this.logIn} />}
+            {isLoggedIn ? <CourseList listCourses={listCourses} /> : <Login logIn={handleLogIn} />}
           </BodySectionWithMarginBottom>
           <BodySection title="News from the School">
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vel ex a arcu condimentum semper et vitae ipsum.</p>
@@ -133,6 +121,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   displayNotificationDrawer,
   hideNotificationDrawer,
+  login: loginRequest,
+  logout,
 };
 
 App.propTypes = {
@@ -140,6 +130,8 @@ App.propTypes = {
   displayDrawer: PropTypes.bool,
   displayNotificationDrawer: PropTypes.func,
   hideNotificationDrawer: PropTypes.func,
+  login: PropTypes.func,
+  logout: PropTypes.func,
 };
 
 App.defaultProps = {
@@ -147,6 +139,8 @@ App.defaultProps = {
   displayDrawer: false,
   displayNotificationDrawer: () => {},
   hideNotificationDrawer: () => {},
+  login: () => {},
+  logout: () => {},
 };
 
 export { mapStateToProps };
