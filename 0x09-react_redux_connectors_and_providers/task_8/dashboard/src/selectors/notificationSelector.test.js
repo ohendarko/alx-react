@@ -40,4 +40,13 @@ describe('Notification Selectors', () => {
     };
     expect(result).toEqual(expected);
   });
+
+  it('getUnreadNotificationsByType should return unread urgent notifications when filter is set to URGENT', () => {
+    state.notifications = state.notifications.set('filter', 'URGENT');
+    const result = getUnreadNotifications(state).toJS();
+    const expected = {
+      3: { id: 3, isRead: false, type: "urgent", value: "New data available" }
+    };
+    expect(result).toEqual(expected);
+  });
 });
