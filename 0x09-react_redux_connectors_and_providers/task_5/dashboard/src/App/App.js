@@ -53,11 +53,6 @@ class App extends Component {
       login(email, password);
     };
 
-    const handleMarkNotificationAsRead = (id) => {
-      this.setState(prevState => ({
-        listNotifications: prevState.listNotifications.filter(notification => notification.id !== id)
-      }));
-    };
 
     return (
       <AppContext.Provider value={{ user, logOut: this.props.logout }}>
@@ -67,7 +62,6 @@ class App extends Component {
             listNotifications={listNotifications}
             handleDisplayDrawer={displayNotificationDrawer}
             handleHideDrawer={hideNotificationDrawer}
-            markNotificationAsRead={handleMarkNotificationAsRead}
           />
           <Header />
           <BodySectionWithMarginBottom title={isLoggedIn ? "Course list" : "Log in to continue"}>

@@ -1,10 +1,16 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, useEffect } from "react";
 import { StyleSheet, css } from 'aphrodite';
 import closeIcon from '../assets/close-icon.png';
 import NotificationItem from "./NotificationItem";
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchNotifications } from '../actions/notificationActionCreators';
 
 class Notifications extends PureComponent {
+  componentDidMount() {
+    this.props.fetchNotifications();
+  }
+
   handleCloseClick = () => {
     console.log("Close button has been clicked");
     this.props.handleHideDrawer();
@@ -59,6 +65,7 @@ Notifications.propTypes = {
   handleDisplayDrawer: PropTypes.func,
   handleHideDrawer: PropTypes.func,
   markNotificationAsRead: PropTypes.func.isRequired,
+  fetchNotifications: PropTypes.func.isRequired,
 };
 
 Notifications.defaultProps = {
@@ -67,6 +74,17 @@ Notifications.defaultProps = {
   handleDisplayDrawer: () => {},
   handleHideDrawer: () => {},
 };
+
+const mapStateToProps = (state) => ({
+  listNotifications: state.get('notifications').get('notifications').toArray(),
+  displayDrawer: state.get('ui').get('isNotificationDrawerVisible'),
+});
+
+const mapDispatchToProps = {
+  fetchNotifications,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Notifications);
 
 const styles = StyleSheet.create({
   notifications: {
@@ -103,5 +121,3 @@ const styles = StyleSheet.create({
     cursor: 'pointer'
   },
 });
-
-export default Notifications;
